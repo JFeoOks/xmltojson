@@ -29,7 +29,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
     private ValueHolder rawValue;
 
     private boolean isConvertStringToNumbers = true;
-    private String textPreffix = DEFAULT_TEXT;
+    private String textPrefix = DEFAULT_TEXT;
     private static final List<FormatAction<String, ValueNode>> formatters;
 
     static {
@@ -75,7 +75,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
 
     public SaxJsonContentHandler(boolean isConvertStringToNumbers, String textPrefix) {
         this.isConvertStringToNumbers = isConvertStringToNumbers;
-        this.textPreffix = textPrefix;
+        this.textPrefix = textPrefix;
     }
 
     /*
@@ -192,7 +192,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
         if (rawValue == null) {
             if (!isBlank) {
                 checkLastNode(lastNode);
-                lastNode.set(textPreffix, convertValue(text));
+                lastNode.set(textPrefix, convertValue(text));
             }
             return;
         }

@@ -19,7 +19,6 @@ import static org.mockito.Mockito.*;
 
 public class SaxJsonContentHandlerTest {
 
-    private JsonNodeFactory factory = JsonNodeFactory.instance;
     private SaxJsonContentHandler handler = new SaxJsonContentHandler(true);
 
 
