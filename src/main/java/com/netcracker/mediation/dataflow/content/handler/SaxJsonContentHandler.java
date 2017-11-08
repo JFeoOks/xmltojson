@@ -219,6 +219,10 @@ public class SaxJsonContentHandler extends DefaultHandler {
         return factory.textNode(text);
     }
 
+    public ObjectNode getRoot() {
+        return root;
+    }
+
     @Override
     public String toString() {
         return root.toString();

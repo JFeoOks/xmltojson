@@ -1,6 +1,5 @@
 package com.netcracker.mediation.dataflow.content.handler;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
