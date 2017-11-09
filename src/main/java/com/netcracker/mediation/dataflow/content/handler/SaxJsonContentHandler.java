@@ -119,7 +119,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
             ObjectNode node = createObjectNode(attributes);
             writeObjectNode(lastNode, qName, node);
         } else {
-            rawValue = new ValueHolder(uri, localName, qName, attributes);
+            rawValue = new ValueHolder(qName);
         }
     }
 
@@ -219,27 +219,17 @@ public class SaxJsonContentHandler extends DefaultHandler {
         return factory.textNode(text);
     }
 
-    public ObjectNode getRoot() {
-        return root;
-    }
-
     @Override
     public String toString() {
         return root.toString();
     }
 
-    private class ValueHolder {
+    private static class ValueHolder {
 
-        private String uri;
-        private String localName;
         private String qName;
-        private Attributes attributes;
 
-        public ValueHolder(String uri, String localName, String qName, Attributes attributes) {
-            this.uri = uri;
-            this.localName = localName;
+        public ValueHolder(String qName) {
             this.qName = qName;
-            this.attributes = attributes;
         }
     }
 }

@@ -261,7 +261,7 @@ public class SaxJsonContentHandlerTest {
         String result = root.get(handler).toString();
 
         JSONAssert.assertEquals(
-                root.get(handler).toString(),
+                result,
                 "{\n" +
                         "  \"note\": {\n" +
                         "    \"to\": \"Tove\",\n" +
