@@ -17,7 +17,8 @@ import static org.apache.commons.lang3.math.NumberUtils.*;
 public class SaxJsonContentHandler extends DefaultHandler {
 
     private static final JsonNodeFactory factory = JsonNodeFactory.withExactBigDecimals(true);
-    private static final String DEFAULT_TEXT = "text";
+    private static final String DEFAULT_VALUE_PREFIX = "text";
+    private static final String DEFAULT_ATTRIBUTE_PREFIX = "@";
 
     private ObjectNode root = factory.objectNode();
     private Deque<ObjectNode> current = new ArrayDeque<>();
@@ -29,7 +30,10 @@ public class SaxJsonContentHandler extends DefaultHandler {
     private ValueHolder rawValue;
 
     private boolean isConvertStringToNumbers = true;
-    private String textPrefix = DEFAULT_TEXT;
+    private String valuePrefix = DEFAULT_VALUE_PREFIX;
+    private boolean isUseDifferentPrefixForAttributes = false;
+    private String attrPrefix = DEFAULT_ATTRIBUTE_PREFIX;
+
     private static final List<FormatAction<String, ValueNode>> formatters;
 
     static {
@@ -73,9 +77,11 @@ public class SaxJsonContentHandler extends DefaultHandler {
         this.isConvertStringToNumbers = isConvertStringToNumbers;
     }
 
-    public SaxJsonContentHandler(boolean isConvertStringToNumbers, String textPrefix) {
+    public SaxJsonContentHandler(String valuePrefix, boolean isConvertStringToNumbers, boolean isUseDifferentPrefixForAttributes, String attrPrefix) {
+        this.valuePrefix = valuePrefix;
         this.isConvertStringToNumbers = isConvertStringToNumbers;
-        this.textPrefix = textPrefix;
+        this.isUseDifferentPrefixForAttributes = isUseDifferentPrefixForAttributes;
+        this.attrPrefix = attrPrefix;
     }
 
     /*
@@ -162,7 +168,11 @@ public class SaxJsonContentHandler extends DefaultHandler {
 
     private void writeAttributes(final ObjectNode node, final Attributes attributes) {
         for (int index = 0; index < attributes.getLength(); index++) {
-            node.put(attributes.getQName(index), attributes.getValue(index));
+            String name = attributes.getQName(index);
+            node.put(
+                    isUseDifferentPrefixForAttributes ? attrPrefix + name : name,
+                    convertValue(attributes.getValue(index))
+            );
         }
     }
 
@@ -192,7 +202,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
         if (rawValue == null) {
             if (!isBlank) {
                 checkLastNode(lastNode);
-                lastNode.set(textPrefix, convertValue(text));
+                lastNode.set(valuePrefix, convertValue(text));
             }
             return;
         }

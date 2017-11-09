@@ -10,6 +10,7 @@ import org.xml.sax.XMLReader;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.Deque;
 import java.util.Iterator;
 
@@ -19,7 +20,6 @@ import static org.mockito.Mockito.*;
 public class SaxJsonContentHandlerTest {
 
     private SaxJsonContentHandler handler = new SaxJsonContentHandler(true);
-
 
     private Attributes getMockedAttributes() {
         Attributes mock = mock(Attributes.class);
@@ -262,14 +262,7 @@ public class SaxJsonContentHandlerTest {
 
         JSONAssert.assertEquals(
                 result,
-                "{\n" +
-                        "  \"note\": {\n" +
-                        "    \"to\": \"Tove\",\n" +
-                        "    \"from\": \"Jani\",\n" +
-                        "    \"heading\": \"Reminder\",\n" +
-                        "    \"body\": \"Don't forget me this weekend!\"\n" +
-                        "  }\n" +
-                        "}",
+                "{\"note\":{\"to\":\"Tove\",\"from\":\"Jani\",\"heading\":\"Reminder\",\"body\":\"Don't forget me this weekend!\"}}",
                 JSONCompareMode.LENIENT);
     }
 
@@ -291,44 +284,7 @@ public class SaxJsonContentHandlerTest {
 
         JSONAssert.assertEquals(
                 result,
-                "{\n" +
-                        "  \"CATALOG\": {\n" +
-                        "    \"CD\": [\n" +
-                        "      {\n" +
-                        "        \"TITLE\": \"Empire Burlesque\",\n" +
-                        "        \"ARTIST\": \"Bob Dylan\",\n" +
-                        "        \"COUNTRY\": \"USA\",\n" +
-                        "        \"COMPANY\": \"Columbia\",\n" +
-                        "        \"PRICE\": \"10.90\",\n" +
-                        "        \"YEAR\": \"1985\"\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"TITLE\": \"Hide your heart\",\n" +
-                        "        \"ARTIST\": \"Bonnie Tyler\",\n" +
-                        "        \"COUNTRY\": \"UK\",\n" +
-                        "        \"COMPANY\": \"CBS Records\",\n" +
-                        "        \"PRICE\": \"9.90\",\n" +
-                        "        \"YEAR\": \"1988\"\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"TITLE\": \"Greatest Hits\",\n" +
-                        "        \"ARTIST\": \"Dolly Parton\",\n" +
-                        "        \"COUNTRY\": \"USA\",\n" +
-                        "        \"COMPANY\": \"RCA\",\n" +
-                        "        \"PRICE\": \"9.90\",\n" +
-                        "        \"YEAR\": \"1982\"\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"TITLE\": \"Red\",\n" +
-                        "        \"ARTIST\": \"The Communards\",\n" +
-                        "        \"COUNTRY\": \"UK\",\n" +
-                        "        \"COMPANY\": \"London\",\n" +
-                        "        \"PRICE\": \"7.80\",\n" +
-                        "        \"YEAR\": \"1987\"\n" +
-                        "      }\n" +
-                        "    ]\n" +
-                        "  }\n" +
-                        "}",
+                "{\"CATALOG\":{\"CD\":[{\"TITLE\":\"Empire Burlesque\",\"ARTIST\":\"Bob Dylan\",\"COUNTRY\":\"USA\",\"COMPANY\":\"Columbia\",\"PRICE\":\"10.90\",\"YEAR\":\"1985\"},{\"TITLE\":\"Hide your heart\",\"ARTIST\":\"Bonnie Tyler\",\"COUNTRY\":\"UK\",\"COMPANY\":\"CBS Records\",\"PRICE\":\"9.90\",\"YEAR\":\"1988\"},{\"TITLE\":\"Greatest Hits\",\"ARTIST\":\"Dolly Parton\",\"COUNTRY\":\"USA\",\"COMPANY\":\"RCA\",\"PRICE\":\"9.90\",\"YEAR\":\"1982\"},{\"TITLE\":\"Red\",\"ARTIST\":\"The Communards\",\"COUNTRY\":\"UK\",\"COMPANY\":\"London\",\"PRICE\":\"7.80\",\"YEAR\":\"1987\"}]}}",
                 JSONCompareMode.LENIENT);
     }
 
@@ -349,44 +305,7 @@ public class SaxJsonContentHandlerTest {
 
         JSONAssert.assertEquals(
                 result,
-                "{\n" +
-                        "  \"CATALOG\": {\n" +
-                        "    \"CD\": [\n" +
-                        "      {\n" +
-                        "        \"TITLE\": \"Empire Burlesque\",\n" +
-                        "        \"ARTIST\": \"Bob Dylan\",\n" +
-                        "        \"COUNTRY\": \"USA\",\n" +
-                        "        \"COMPANY\": \"Columbia\",\n" +
-                        "        \"PRICE\": 10.90,\n" +
-                        "        \"YEAR\": 1985\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"TITLE\": \"Hide your heart\",\n" +
-                        "        \"ARTIST\": \"Bonnie Tyler\",\n" +
-                        "        \"COUNTRY\": \"UK\",\n" +
-                        "        \"COMPANY\": \"CBS Records\",\n" +
-                        "        \"PRICE\": 9.90,\n" +
-                        "        \"YEAR\": 1988\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"TITLE\": \"Greatest Hits\",\n" +
-                        "        \"ARTIST\": \"Dolly Parton\",\n" +
-                        "        \"COUNTRY\": \"USA\",\n" +
-                        "        \"COMPANY\": \"RCA\",\n" +
-                        "        \"PRICE\": 9.90,\n" +
-                        "        \"YEAR\": 1982\n" +
-                        "      },\n" +
-                        "      {\n" +
-                        "        \"TITLE\": \"Red\",\n" +
-                        "        \"ARTIST\": \"The Communards\",\n" +
-                        "        \"COUNTRY\": \"UK\",\n" +
-                        "        \"COMPANY\": \"London\",\n" +
-                        "        \"PRICE\": 7.80,\n" +
-                        "        \"YEAR\": 1987\n" +
-                        "      }\n" +
-                        "    ]\n" +
-                        "  }\n" +
-                        "}",
+                "{\"CATALOG\":{\"CD\":[{\"TITLE\":\"Empire Burlesque\",\"ARTIST\":\"Bob Dylan\",\"COUNTRY\":\"USA\",\"COMPANY\":\"Columbia\",\"PRICE\":10.90,\"YEAR\":1985},{\"TITLE\":\"Hide your heart\",\"ARTIST\":\"Bonnie Tyler\",\"COUNTRY\":\"UK\",\"COMPANY\":\"CBS Records\",\"PRICE\":9.90,\"YEAR\":1988},{\"TITLE\":\"Greatest Hits\",\"ARTIST\":\"Dolly Parton\",\"COUNTRY\":\"USA\",\"COMPANY\":\"RCA\",\"PRICE\":9.90,\"YEAR\":1982},{\"TITLE\":\"Red\",\"ARTIST\":\"The Communards\",\"COUNTRY\":\"UK\",\"COMPANY\":\"London\",\"PRICE\":7.80,\"YEAR\":1987}]}}",
                 JSONCompareMode.LENIENT);
     }
 
@@ -408,129 +327,23 @@ public class SaxJsonContentHandlerTest {
 
         JSONAssert.assertEquals(
                 result,
-                "{\n" +
-                        "\t\"anagrafica\": {\n" +
-                        "\t\t\"testata\": {\n" +
-                        "\t\t\t\"nomemercato\": {\n" +
-                        "\t\t\t\t\"id\": \"007\",\n" +
-                        "\t\t\t\t\"text\": \"Mercato di test\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t\"data\": \"Giovedi 18 dicembre 2003 16.05.29\"\n" +
-                        "\t\t},\n" +
-                        "\t\t\"record\": [\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"5\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"Miami American Cafe\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT07654930130\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"casa\",\n" +
-                        "\t\t\t\t\t\"text\": \"Viale Carlo Espinasse 5, Como\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"13\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"302\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"Filiberto Gilardi\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT87654770157\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"ufficio\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Biancospini 20, Messina\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"8\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"1302\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"Eidon\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT887511231\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"ufficio\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Bassini 17/2, Milano\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"18\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"202\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"SkillNet\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT887642131\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"ufficio\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Chiasserini 11A, Milano\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"24\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"12\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"Eidon\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT04835710965\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"casa\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Cignoli 17/2, Roma\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"1112\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"5\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"Miami American Cafe\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT07654930130\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"casa\",\n" +
-                        "\t\t\t\t\t\"text\": \"Viale Carlo Espinasse 5, Como\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"13\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"302\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"Filiberto Gilardi\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT87654770157\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"ufficio\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Biancospini 20, Messina\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"8\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"1302\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"Eidon\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT887511231\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"ufficio\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Bassini 17/2, Milano\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"18\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"202\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"SkillNet\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT887642131\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"ufficio\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Chiasserini 11A, Milano\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"24\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"202\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"SkillNet\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT887642131\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"ufficio\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Chiasserini 11A, Milano\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"24\"\n" +
-                        "\t\t\t},\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"codice_cliente\": \"12\",\n" +
-                        "\t\t\t\t\"rag_soc\": \"Eidon\",\n" +
-                        "\t\t\t\t\"codice_fiscale\": \"IT04835710965\",\n" +
-                        "\t\t\t\t\"indirizzo\": {\n" +
-                        "\t\t\t\t\t\"tipo\": \"casa\",\n" +
-                        "\t\t\t\t\t\"text\": \"Via Cignoli 17/2, Roma\"\n" +
-                        "\t\t\t\t},\n" +
-                        "\t\t\t\t\"num_prodotti\": \"1112\"\n" +
-                        "\t\t\t}\n" +
-                        "\t\t]\n" +
-                        "\t}\n" +
-                        "}",
+                "{\"anagrafica\":{\"testata\":{\"nomemercato\":{\"id\":\"007\",\"text\":\"Mercato di test\"},\"data\":\"Giovedi 18 dicembre 2003 16.05.29\"},\"record\":[{\"codice_cliente\":\"5\",\"rag_soc\":\"Miami American Cafe\",\"codice_fiscale\":\"IT07654930130\",\"indirizzo\":{\"tipo\":\"casa\",\"text\":\"Viale Carlo Espinasse 5, Como\"},\"num_prodotti\":\"13\"},{\"codice_cliente\":\"302\",\"rag_soc\":\"Filiberto Gilardi\",\"codice_fiscale\":\"IT87654770157\",\"indirizzo\":{\"tipo\":\"ufficio\",\"text\":\"Via Biancospini 20, Messina\"},\"num_prodotti\":\"8\"},{\"codice_cliente\":\"1302\",\"rag_soc\":\"Eidon\",\"codice_fiscale\":\"IT887511231\",\"indirizzo\":{\"tipo\":\"ufficio\",\"text\":\"Via Bassini 17/2, Milano\"},\"num_prodotti\":\"18\"},{\"codice_cliente\":\"202\",\"rag_soc\":\"SkillNet\",\"codice_fiscale\":\"IT887642131\",\"indirizzo\":{\"tipo\":\"ufficio\",\"text\":\"Via Chiasserini 11A, Milano\"},\"num_prodotti\":\"24\"},{\"codice_cliente\":\"12\",\"rag_soc\":\"Eidon\",\"codice_fiscale\":\"IT04835710965\",\"indirizzo\":{\"tipo\":\"casa\",\"text\":\"Via Cignoli 17/2, Roma\"},\"num_prodotti\":\"1112\"},{\"codice_cliente\":\"5\",\"rag_soc\":\"Miami American Cafe\",\"codice_fiscale\":\"IT07654930130\",\"indirizzo\":{\"tipo\":\"casa\",\"text\":\"Viale Carlo Espinasse 5, Como\"},\"num_prodotti\":\"13\"},{\"codice_cliente\":\"302\",\"rag_soc\":\"Filiberto Gilardi\",\"codice_fiscale\":\"IT87654770157\",\"indirizzo\":{\"tipo\":\"ufficio\",\"text\":\"Via Biancospini 20, Messina\"},\"num_prodotti\":\"8\"},{\"codice_cliente\":\"1302\",\"rag_soc\":\"Eidon\",\"codice_fiscale\":\"IT887511231\",\"indirizzo\":{\"tipo\":\"ufficio\",\"text\":\"Via Bassini 17/2, Milano\"},\"num_prodotti\":\"18\"},{\"codice_cliente\":\"202\",\"rag_soc\":\"SkillNet\",\"codice_fiscale\":\"IT887642131\",\"indirizzo\":{\"tipo\":\"ufficio\",\"text\":\"Via Chiasserini 11A, Milano\"},\"num_prodotti\":\"24\"},{\"codice_cliente\":\"202\",\"rag_soc\":\"SkillNet\",\"codice_fiscale\":\"IT887642131\",\"indirizzo\":{\"tipo\":\"ufficio\",\"text\":\"Via Chiasserini 11A, Milano\"},\"num_prodotti\":\"24\"},{\"codice_cliente\":\"12\",\"rag_soc\":\"Eidon\",\"codice_fiscale\":\"IT04835710965\",\"indirizzo\":{\"tipo\":\"casa\",\"text\":\"Via Cignoli 17/2, Roma\"},\"num_prodotti\":\"1112\"}]}}",
                 JSONCompareMode.LENIENT);
+    }
+
+    @Test
+    public void convertedToNumbersAttributesWithSpecifiedPrefix() throws Exception {
+        SaxJsonContentHandler handler = new SaxJsonContentHandler("text", true, true, "@");
+        handler.startDocument();
+        handler.startElement(null, null, "test_integer", getMockedAttributes());
+
+        Deque<ObjectNode> currentField = getCurrentField(handler);
+        Iterator<ObjectNode> objectNodeIterator = currentField.descendingIterator();
+
+        ObjectNode currentNode = objectNodeIterator.next();
+        System.out.println(currentNode);
+        assertEquals(currentNode.get("@game").bigIntegerValue(), BigInteger.ONE);
+        assertEquals(currentNode.get("@set").bigIntegerValue(), new BigInteger("2"));
+        assertEquals(currentNode.get("@match").bigIntegerValue(), new BigInteger("3"));
     }
 }
