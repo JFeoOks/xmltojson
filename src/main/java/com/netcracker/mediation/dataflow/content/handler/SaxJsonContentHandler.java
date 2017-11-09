@@ -29,7 +29,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
 
     private ValueHolder rawValue;
 
-    private boolean isConvertStringToNumbers = true;
+    private boolean isConvertToJsonPrimitives = true;
     private String valuePrefix = DEFAULT_VALUE_PREFIX;
     private boolean isUseDifferentPrefixForAttributes = false;
     private String attrPrefix = DEFAULT_ATTRIBUTE_PREFIX;
@@ -73,13 +73,13 @@ public class SaxJsonContentHandler extends DefaultHandler {
         return "true".equalsIgnoreCase(text) || "false".equalsIgnoreCase(text);
     }
 
-    public SaxJsonContentHandler(boolean isConvertStringToNumbers) {
-        this.isConvertStringToNumbers = isConvertStringToNumbers;
+    public SaxJsonContentHandler(boolean isConvertToJsonPrimitives) {
+        this.isConvertToJsonPrimitives = isConvertToJsonPrimitives;
     }
 
-    public SaxJsonContentHandler(String valuePrefix, boolean isConvertStringToNumbers, boolean isUseDifferentPrefixForAttributes, String attrPrefix) {
+    public SaxJsonContentHandler(String valuePrefix, boolean isConvertToJsonPrimitives, boolean isUseDifferentPrefixForAttributes, String attrPrefix) {
         this.valuePrefix = valuePrefix;
-        this.isConvertStringToNumbers = isConvertStringToNumbers;
+        this.isConvertToJsonPrimitives = isConvertToJsonPrimitives;
         this.isUseDifferentPrefixForAttributes = isUseDifferentPrefixForAttributes;
         this.attrPrefix = attrPrefix;
     }
@@ -220,7 +220,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
     }
 
     private ValueNode convertValue(final String text) {
-        if (isConvertStringToNumbers) {
+        if (isConvertToJsonPrimitives) {
             for (FormatAction<String, ValueNode> formatter : formatters) {
                 ValueNode value = formatter.format(text);
                 if (value != null) return value;

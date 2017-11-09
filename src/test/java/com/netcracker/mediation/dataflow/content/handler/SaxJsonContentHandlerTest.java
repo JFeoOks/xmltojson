@@ -29,8 +29,8 @@ public class SaxJsonContentHandlerTest {
         when(mock.getQName(2)).thenReturn("match");
 
         when(mock.getValue(0)).thenReturn("1");
-        when(mock.getValue(1)).thenReturn("2");
-        when(mock.getValue(2)).thenReturn("3");
+        when(mock.getValue(1)).thenReturn("true");
+        when(mock.getValue(2)).thenReturn("hello");
 
         return mock;
     }
@@ -55,18 +55,12 @@ public class SaxJsonContentHandlerTest {
 
         assertFalse(currentNode.isArray());
 
-        assertNotNull(currentNode.get("game"));
-        assertNotNull(currentNode.get("set"));
-        assertNotNull(currentNode.get("match"));
-
-        assertEquals(currentNode.get("game").textValue(), "1");
-        assertEquals(currentNode.get("set").textValue(), "2");
-        assertEquals(currentNode.get("match").textValue(), "3");
+        assertEquals(currentNode.get("game").bigIntegerValue(), BigInteger.ONE);
+        assertEquals(currentNode.get("set").booleanValue(), true);
+        assertEquals(currentNode.get("match").textValue(), "hello");
 
         ObjectNode parent = objectNodeIterator.next();
 
-        assertNotNull(parent);
-        assertNotNull(parent.get("test_param"));
         assertTrue(parent.get("test_param").equals(currentNode));
     }
 
@@ -84,18 +78,12 @@ public class SaxJsonContentHandlerTest {
         Iterator<ObjectNode> objectNodeIterator = currentField.descendingIterator();
         ObjectNode currentNode = objectNodeIterator.next();
 
-        assertNotNull(currentNode.get("game"));
-        assertNotNull(currentNode.get("set"));
-        assertNotNull(currentNode.get("match"));
-
-        assertEquals(currentNode.get("game").textValue(), "1");
-        assertEquals(currentNode.get("set").textValue(), "2");
-        assertEquals(currentNode.get("match").textValue(), "3");
+        assertEquals(currentNode.get("game").bigIntegerValue(), BigInteger.ONE);
+        assertEquals(currentNode.get("set").booleanValue(), true);
+        assertEquals(currentNode.get("match").textValue(), "hello");
 
         ObjectNode parent = objectNodeIterator.next();
 
-        assertNotNull(parent);
-        assertNotNull(parent.get("test_param"));
         assertTrue(parent.get("test_param").isArray());
         assertTrue(parent.get("test_param").get(0).equals(currentNode));
     }
@@ -341,9 +329,25 @@ public class SaxJsonContentHandlerTest {
         Iterator<ObjectNode> objectNodeIterator = currentField.descendingIterator();
 
         ObjectNode currentNode = objectNodeIterator.next();
-        System.out.println(currentNode);
+
         assertEquals(currentNode.get("@game").bigIntegerValue(), BigInteger.ONE);
-        assertEquals(currentNode.get("@set").bigIntegerValue(), new BigInteger("2"));
-        assertEquals(currentNode.get("@match").bigIntegerValue(), new BigInteger("3"));
+        assertEquals(currentNode.get("@set").booleanValue(), true);
+        assertEquals(currentNode.get("@match").textValue(), "hello");
+    }
+
+    @Test
+    public void attributesWithSpecifiedPrefix() throws Exception {
+        SaxJsonContentHandler handler = new SaxJsonContentHandler("text", false, true, "@");
+        handler.startDocument();
+        handler.startElement(null, null, "test_integer", getMockedAttributes());
+
+        Deque<ObjectNode> currentField = getCurrentField(handler);
+        Iterator<ObjectNode> objectNodeIterator = currentField.descendingIterator();
+
+        ObjectNode currentNode = objectNodeIterator.next();
+
+        assertEquals(currentNode.get("@game").textValue(),"1");
+        assertEquals(currentNode.get("@set").textValue(), "true");
+        assertEquals(currentNode.get("@match").textValue(), "hello");
     }
 }
