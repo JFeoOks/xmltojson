@@ -31,7 +31,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
 
     private boolean isConvertToJsonPrimitives = true;
     private String valuePrefix = DEFAULT_VALUE_PREFIX;
-    private boolean isUseDifferentPrefixForAttributes = false;
+    private boolean isUsePrefixForAttributes = false;
     private String attrPrefix = DEFAULT_ATTRIBUTE_PREFIX;
 
     private static final List<FormatAction<String, ValueNode>> formatters;
@@ -77,10 +77,10 @@ public class SaxJsonContentHandler extends DefaultHandler {
         this.isConvertToJsonPrimitives = isConvertToJsonPrimitives;
     }
 
-    public SaxJsonContentHandler(String valuePrefix, boolean isConvertToJsonPrimitives, boolean isUseDifferentPrefixForAttributes, String attrPrefix) {
+    public SaxJsonContentHandler(String valuePrefix, boolean isConvertToJsonPrimitives, boolean isUsePrefixForAttributes, String attrPrefix) {
         this.valuePrefix = valuePrefix;
         this.isConvertToJsonPrimitives = isConvertToJsonPrimitives;
-        this.isUseDifferentPrefixForAttributes = isUseDifferentPrefixForAttributes;
+        this.isUsePrefixForAttributes = isUsePrefixForAttributes;
         this.attrPrefix = attrPrefix;
     }
 
@@ -170,7 +170,7 @@ public class SaxJsonContentHandler extends DefaultHandler {
         for (int index = 0; index < attributes.getLength(); index++) {
             String name = attributes.getQName(index);
             node.put(
-                    isUseDifferentPrefixForAttributes ? attrPrefix + name : name,
+                    isUsePrefixForAttributes ? attrPrefix + name : name,
                     convertValue(attributes.getValue(index))
             );
         }
@@ -241,5 +241,25 @@ public class SaxJsonContentHandler extends DefaultHandler {
         public ValueHolder(String qName) {
             this.qName = qName;
         }
+    }
+
+    public SaxJsonContentHandler setConvertToJsonPrimitives(boolean convertToJsonPrimitives) {
+        isConvertToJsonPrimitives = convertToJsonPrimitives;
+        return this;
+    }
+
+    public SaxJsonContentHandler setValuePrefix(String valuePrefix) {
+        this.valuePrefix = valuePrefix;
+        return this;
+    }
+
+    public SaxJsonContentHandler setUsePrefixForAttributes(boolean usePrefixForAttributes) {
+        isUsePrefixForAttributes = usePrefixForAttributes;
+        return this;
+    }
+
+    public SaxJsonContentHandler setAttrPrefix(String attrPrefix) {
+        this.attrPrefix = attrPrefix;
+        return this;
     }
 }
