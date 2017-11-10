@@ -346,8 +346,34 @@ public class SaxJsonContentHandlerTest {
 
         ObjectNode currentNode = objectNodeIterator.next();
 
-        assertEquals(currentNode.get("@game").textValue(),"1");
+        assertEquals(currentNode.get("@game").textValue(), "1");
         assertEquals(currentNode.get("@set").textValue(), "true");
         assertEquals(currentNode.get("@match").textValue(), "hello");
+    }
+
+    @Test
+    public void nestedNodes() throws Exception {
+        SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+        SAXParser saxParser = saxParserFactory.newSAXParser();
+        XMLReader xmlReader = saxParser.getXMLReader();
+
+        SaxJsonContentHandler handler = new SaxJsonContentHandler(false)
+                .setAttrPrefix("@")
+                .setConvertToJsonPrimitives(false)
+                .setUsePrefixForAttributes(true)
+                .setValuePrefix("#text");
+        xmlReader.setContentHandler(handler);
+        xmlReader.parse("src/test/resources/nestedNode.xml");
+
+        Field root = SaxJsonContentHandler.class.getDeclaredField("root");
+        root.setAccessible(true);
+
+
+        String result = root.get(handler).toString();
+
+        JSONAssert.assertEquals(
+                result,
+                "{\"anagrafica\":{\"testata\":{\"nomemercato\":{\"@id\":\"007\",\"#text\":\"Mercato di test\"},\"data\":\"Giovedi 18 dicembre 2003 16.05.29\"},\"record\":[{\"codice_cliente\":\"5\",\"rag_soc\":\"Miami American Cafe\",\"codice_fiscale\":\"IT07654930130\",\"indirizzo\":{\"@tipo\":\"casa\",\"#text\":\"Viale Carlo Espinasse 5, Como\"},\"num_prodotti\":{\"testata\":{\"nomemercato\":{\"@id\":\"007\",\"#text\":\"Mercato di test\"},\"data\":\"Giovedi 18 dicembre 2003 16.05.29\"}}},{\"codice_cliente\":\"302\",\"rag_soc\":\"Filiberto Gilardi\",\"codice_fiscale\":\"IT87654770157\",\"indirizzo\":{\"@tipo\":\"ufficio\",\"#text\":\"Via Biancospini 20, Messina\"},\"num_prodotti\":{\"testata\":{\"nomemercato\":{\"@id\":\"007\",\"#text\":\"Mercato di test\"},\"data\":\"Giovedi 18 dicembre 2003 16.05.29\"}}},{\"codice_cliente\":\"1302\",\"rag_soc\":\"Eidon\",\"codice_fiscale\":\"IT887511231\",\"indirizzo\":{\"@tipo\":\"ufficio\",\"#text\":\"Via Bassini 17/2, Milano\"},\"num_prodotti\":{\"testata\":{\"nomemercato\":{\"@id\":\"007\",\"#text\":\"Mercato di test\"},\"data\":\"Giovedi 18 dicembre 2003 16.05.29\"}}}]}}",
+                JSONCompareMode.LENIENT);
     }
 }
