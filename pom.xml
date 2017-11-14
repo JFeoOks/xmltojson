@@ -118,27 +118,18 @@
             <scope>test</scope>
         </dependency>
 
-
-        <!-- or, to use the Gson streaming backend
         <dependency>
-            <groupId>de.odysseus.staxon</groupId>
-            <artifactId>staxon-gson</artifactId>
-            <version>1.3</version>
-        </dependency>
-        -->
-
-        <!-- or, to use the JSR-353 streaming backend
-        <dependency>
-            <groupId>de.odysseus.staxon</groupId>
-            <artifactId>staxon-jsr353</artifactId>
-            <version>1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <version>1.0.4</version>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.11.0</version>
             <scope>test</scope>
         </dependency>
-        -->
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.4-jre</version>
+        </dependency>
+
     </dependencies>
 </project>
